@@ -710,7 +710,12 @@ func (f *framer) parseErrorFrame() frame {
 		res.Received = f.readInt()
 		res.BlockFor = f.readInt()
 		return res
-	case ErrCodeInvalid, ErrCodeBootstrapping, ErrCodeConfig, ErrCodeCredentials, ErrCodeOverloaded,
+	case ErrCodeOverloaded:
+		res := &RequestErrOverloaded{
+			errorFrame: errD,
+		}
+		return res
+	case ErrCodeInvalid, ErrCodeBootstrapping, ErrCodeConfig, ErrCodeCredentials,
 		ErrCodeProtocol, ErrCodeServer, ErrCodeSyntax, ErrCodeTruncate, ErrCodeUnauthorized:
 		// TODO(zariel): we should have some distinct types for these errors
 		return errD
